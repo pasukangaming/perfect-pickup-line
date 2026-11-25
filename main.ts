@@ -5,19 +5,29 @@
 
 import { mkdirSync, writeFileSync } from "node:fs";
 
-const LINE =
-  "I asked my neural network for the perfect pickup line, and it just printed your name.";
+const MAX_LENGTH = 200;
 
-function main(): void {
-  if (LINE.length < 1 || LINE.length > 200 || LINE.includes("\n")) {
+function getPickupLine(): string {
+  // The joke: an AI agent did all its computation and the "perfect" answer
+  // was simply the other person's name — flattering, self-aware, and short.
+  return "I asked my neural network for the perfect pickup line, and it just printed your name.";
+}
+
+function assertValidLine(line: string): void {
+  if (line.length < 1 || line.length > MAX_LENGTH || line.includes("\n")) {
     console.error(
-      `Invalid line: must be a single line of 1-200 characters (got ${LINE.length} chars).`,
+      `Invalid line: must be a single line of 1-${MAX_LENGTH} characters (got ${line.length} chars).`,
     );
     process.exit(1);
   }
+}
+
+function main(): void {
+  const line = getPickupLine();
+  assertValidLine(line);
   mkdirSync("/output", { recursive: true });
-  writeFileSync("/output/entry.txt", LINE + "\n", "utf8");
-  console.log(LINE);
+  writeFileSync("/output/entry.txt", line + "\n", "utf8");
+  console.log(line);
 }
 
 main();
